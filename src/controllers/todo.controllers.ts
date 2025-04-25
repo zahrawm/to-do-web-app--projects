@@ -88,7 +88,7 @@ export const deleteTodo = async (req: Request, res: Response): Promise<void> => 
     const id = parseInt(req.params.id);
     const deleted = await TodoService.remove(id);
     
-    if (deleted) {
+    if (deleted) {  
       res.status(204).send();
     } else {
       res.status(404).json({ error: 'Todo not found' });

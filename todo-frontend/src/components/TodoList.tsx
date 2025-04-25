@@ -27,7 +27,7 @@ const TodoList: React.FC = () => {
   const handleDelete = async (id: number) => {
     try {
       await TodoService.deleteTodo(id);
-      setTodos(todos.filter(todo => todo.id !== id));
+      setTodos(prev => prev.filter(todo => todo.id !== id));
     } catch (err) {
       setError('Failed to delete todo');
     }
@@ -35,54 +35,58 @@ const TodoList: React.FC = () => {
 
   const handleToggleStatus = async (id: number, completed: boolean) => {
     try {
-      const updatedTodo = await TodoService.toggleTodoStatus(id, !completed);
-      setTodos(todos.map(todo => todo.id === id ? updatedTodo : todo));
+      const updated = await TodoService.toggleTodoStatus(id, !completed);
+      setTodos(prev => prev.map(todo => (todo.id === id ? updated : todo)));
     } catch (err) {
       setError('Failed to update todo status');
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-xl text-gray-500">Loading...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-        <p>{error}</p>
-      </div>
-    );
-  }
-
   return (
-    <div>
+    <div className="max-w-3xl mx-auto p-4 sm:p-6">
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Todo List</h1>
-        <Link to="/add" className="btn btn-primary">
-          Add New Todo
+        <h1 className="text-3xl font-bold text-gray-800">📝 Todo List</h1>
+        <Link
+          to="/add"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition"
+        >
+          + Add Todo
         </Link>
       </div>
-      
-      {todos.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
-          <p className="text-gray-500">No todos found. Create one now!</p>
-        </div>
-      ) : (
-        <div className="grid gap-4">
-          {todos.map(todo => (
-            <TodoItem 
-              key={todo.id} 
-              todo={todo} 
-              onDelete={handleDelete} 
-              onToggleStatus={handleToggleStatus} 
-            />
-          ))}
+
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center items-center h-64">
+          <div className="text-xl text-gray-500 animate-pulse">Loading todos...</div>
         </div>
       )}
+
+      {/* Error State */}
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <strong>Error:</strong> {error}
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!loading && !error && todos.length === 0 && (
+        <div className="bg-white border rounded-lg p-6 text-center shadow-sm">
+          <p className="text-gray-500">No todos found. Create one now!</p>
+        </div>
+      )}
+
+      {/* Todo List */}
+      <div className="grid gap-4">
+        {todos.map(todo => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onDelete={handleDelete}
+            onToggleStatus={handleToggleStatus}
+          />
+        ))}
+      </div>
     </div>
   );
 };
