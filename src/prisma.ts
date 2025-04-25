@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { updateTodo } from './controller/todoControllers';
-import { router } from './routes/todoRoutes';
+import { updateTodo } from './controllers/todo.Controllers';
+import { router } from './routes/todo.routes';
 
 const prisma = new PrismaClient();
 
