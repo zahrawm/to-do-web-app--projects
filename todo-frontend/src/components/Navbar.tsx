@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex space-x-4">
+          <div className="flex justify-center">
             <Link
               to="/"
               className={`px-4 py-2 rounded-md transition-colors duration-200 font-medium ${
@@ -54,7 +54,8 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="flex justify-center
+          ">
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white"
