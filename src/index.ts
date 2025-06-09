@@ -21,6 +21,7 @@ app.get('/', (req: Request, res: Response) => {
 
 
 app.use('/api/todos', todoRoutes);
+// app.use('/api/completed', completedRoutes);
 
 
 app.use((req: Request, res: Response) => {
