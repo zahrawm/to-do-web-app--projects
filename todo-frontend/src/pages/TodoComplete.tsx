@@ -4,7 +4,7 @@ import { TodoService } from '../services/api';
 import { Todo } from '../types/Todo';
 import TodoItem from './TodoItem';
 
-const TodoList: React.FC = () => {
+const CompletedTodos: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -13,10 +13,11 @@ const TodoList: React.FC = () => {
     const fetchTodos = async () => {
       try {
         const data = await TodoService.getAllTodos();
-        setTodos(data);
+        const completedTodos = data.filter(todo => todo.completed);
+        setTodos(completedTodos);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch todos');
+        setError('Failed to fetch completed todos');
         setLoading(false);
       }
     };
@@ -36,7 +37,7 @@ const TodoList: React.FC = () => {
   const handleToggleStatus = async (id: number, completed: boolean) => {
     try {
       const updated = await TodoService.toggleTodoStatus(id, !completed);
-      setTodos(prev => prev.map(todo => (todo.id === id ? updated : todo)));
+      setTodos(prev => prev.filter(todo => todo.id !== id));
     } catch (err) {
       setError('Failed to update todo status');
     }
@@ -44,39 +45,34 @@ const TodoList: React.FC = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-4 sm:p-6">
-      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">📝 Todo List</h1>
+        <h1 className="text-3xl font-bold text-blue-800">✅ Completed Todos</h1>
         <Link
-          to="/add"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition"
+          to="/"
+          className="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition"
         >
-          + Add Todo
+          ← Back to All Todos
         </Link>
       </div>
 
-      {/* Loading State */}
       {loading && (
         <div className="flex justify-center items-center h-64">
-          <div className="text-xl text-gray-500 animate-pulse">Loading todos...</div>
+          <div className="text-xl text-gray-500 animate-pulse">Loading completed todos...</div>
         </div>
       )}
 
-      {/* Error State */}
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
           <strong>Error:</strong> {error}
         </div>
       )}
 
-      {/* Empty State */}
       {!loading && !error && todos.length === 0 && (
         <div className="bg-white border rounded-lg p-6 text-center shadow-sm">
-          <p className="text-gray-500">No todos found. Create one now!</p>
+          <p className="text-gray-500">No completed todos found. Complete some tasks first!</p>
         </div>
       )}
 
-      {/* Todo List */}
       <div className="grid gap-4">
         {todos.map(todo => (
           <TodoItem
@@ -91,4 +87,4 @@ const TodoList: React.FC = () => {
   );
 };
 
-export default TodoList;
+export default CompletedTodos;

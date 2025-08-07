@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import * as TodoService from '../services/todo.services';
 import { Todo } from '../utils/interface';
 
-
-
 export const getAllTodos = async (req: Request, res: Response): Promise<void> => {
   try {
     const todos = await TodoService.findAll();
@@ -12,7 +10,6 @@ export const getAllTodos = async (req: Request, res: Response): Promise<void> =>
     res.status(500).json({ error: 'Failed to retrieve todos' });
   }
 };
-
 
 export const getTodoById = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -28,7 +25,6 @@ export const getTodoById = async (req: Request, res: Response): Promise<void> =>
     res.status(500).json({ error: 'Failed to retrieve todo' });
   }
 };
-
 
 export const createTodo = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -52,7 +48,6 @@ export const createTodo = async (req: Request, res: Response): Promise<void> => 
     res.status(500).json({ error: 'Failed to create todo' });
   }
 };
-
 
 export const updateTodo = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -82,18 +77,32 @@ export const updateTodo = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-
 export const deleteTodo = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
     const deleted = await TodoService.remove(id);
     
-    if (deleted) {  
-      res.status(204).send();
+    if (deleted) {
+        res.status(204).send();
     } else {
       res.status(404).json({ error: 'Todo not found' });
     }
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete todo' });
+  }
+};
+
+export const completeTodo = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = parseInt(req.params.id);
+    const completed = await TodoService.complete(id);
+
+    if (completed) {
+      res.status(204).send();
+    } else {
+      res.status(404).json({ error: 'Todo not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to complete todo' });
   }
 };

@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
+         
           <div className="flex justify-center
           ">
             <button 
@@ -68,7 +68,6 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">

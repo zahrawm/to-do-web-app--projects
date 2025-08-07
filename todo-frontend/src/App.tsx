@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import TodoList from './components/TodoList';
-import TodoForm from './components/TodoForm';
-import TodoDetail from './components/TodoDetails';
-import Navbar from './components/Navbar';
+import TodoList from './pages/TodoList';
+import TodoForm from './pages/TodoForm';
+import TodoDetail from './pages/TodoDetails';
+import Navbar from './pages/Navbar';
+import CompletedTodos from './pages/TodoComplete';
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
             <Route path="/add" element={<TodoForm />} />
             <Route path="/edit/:id" element={<TodoForm />} />
             <Route path="/todo/:id" element={<TodoDetail />} />
+             <Route path="/completed" element={<CompletedTodos />} />
           </Routes>
         </div>
       </div>

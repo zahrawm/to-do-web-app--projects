@@ -42,7 +42,7 @@ export const TodoService = {
 
 
   toggleTodoStatus: async (id: number, completed: boolean): Promise<Todo> => {
-    const response = await api.put(`/todos/${id}`, { completed });
-    return response.data;
-  }
+  const response = await api.post(`/todos/${id}/complete`);
+  return response.data;
+}
 };

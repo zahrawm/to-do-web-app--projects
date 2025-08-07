@@ -3,25 +3,25 @@ import cors from 'cors';
 import todoRoutes from './routes/todo.routes';
 import dotenv from 'dotenv';
 
-// Load environment variables from .env file
+
 dotenv.config();
 
-// Initialize express app
+
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({ message: 'Todo API is running' });
 });
 
 
 app.use('/api/todos', todoRoutes);
-// app.use('/api/completed', completedRoutes);
+
+
 
 
 app.use((req: Request, res: Response) => {
